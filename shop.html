@@ -33,10 +33,10 @@
         </button>
         <a class="wordmark" href="index.html">CALYX</a>
         <nav class="nav" aria-label="Primary">
-          <a href="shop.html">Shop</a>
-          <a href="about.html">Science</a>
-          <a href="index.html#trust">Standards</a>
-          <a href="journal.html">Journal</a>
+          <a href="shop.html" data-tab="shop">Shop</a>
+          <a href="about.html" data-tab="science">Science</a>
+          <a href="standards.html" data-tab="standards">Standards</a>
+          <a href="journal.html" data-tab="journal">Journal</a>
         </nav>
         <div class="acts">
           <button class="icon-btn" type="button" data-search aria-label="Search">
@@ -61,10 +61,10 @@
         </div>
       </div>
       <nav class="mnav" id="mnav" aria-label="Mobile">
-        <a href="shop.html">Shop</a>
-        <a href="about.html">Science</a>
-        <a href="index.html#trust">Standards</a>
-        <a href="journal.html">Journal</a>
+        <a href="shop.html" data-tab="shop">Shop</a>
+        <a href="about.html" data-tab="science">Science</a>
+        <a href="standards.html" data-tab="standards">Standards</a>
+        <a href="journal.html" data-tab="journal">Journal</a>
         <a href="account.html">Account</a>
         <div class="mnav-foot">
           <span>Calyx Laboratories</span>
@@ -98,6 +98,7 @@
           </select>
         </label>
       </div>
+      <p class="shop-count" id="shopCount" aria-live="polite"></p>
       <div class="grid-cards" id="shopGrid"></div>
     </main>
 
@@ -121,7 +122,8 @@
             <h4>Company</h4>
             <ul>
               <li><a href="about.html">Our science</a></li>
-              <li><a href="journal.html">Journal</a></li>
+              <li><a href="standards.html">Standards</a></li>
+              <li><a href="journal.html" data-tab="journal">Journal</a></li>
               <li><a href="about.html#sustainability">Sustainability</a></li>
               <li><a href="contact.html">Careers</a></li>
             </ul>

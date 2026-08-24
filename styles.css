@@ -511,7 +511,9 @@ body.menu-open .mnav {
 }
 
 @media print {
-  .hdr, .announce, .ftr, .to-top, .scroll-progress, .quick-add, .hero-actions, .news, .thumbs { display: none !important; }
+  .hdr, .announce, .ftr, .to-top, .scroll-progress, .quick-add, .hero-actions, .news, .thumbs, .tabs-list { display: none !important; }
+  .tabs { margin-top: 24px; }
+  .tabs-panels { padding-top: 12px; }
   body { background: #fff; color: #000; }
   .container { width: 100%; }
   .pdp-grid { display: block; }
@@ -1316,6 +1318,187 @@ body.menu-open .mnav {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--faint);
+}
+
+/* Tab shell — in-page section switching (product details). */
+.tabs {
+  margin-top: clamp(40px, 5vw, 56px);
+  border-top: 1px solid var(--hairline);
+}
+
+.tabs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 30px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.tabs-btn {
+  position: relative;
+  padding: 18px 2px;
+  font-size: 0.8rem;
+  font-weight: 450;
+  color: var(--stone);
+  transition: color 0.25s ease;
+}
+
+.tabs-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
+.tabs-btn:hover {
+  color: var(--ink);
+}
+
+.tabs-btn[aria-selected="true"] {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.tabs-btn[aria-selected="true"]::after {
+  transform: scaleX(1);
+}
+
+.tabs-panels {
+  padding: 26px 0 8px;
+}
+
+.tabs-panel {
+  font-size: 0.9rem;
+  color: var(--stone);
+  line-height: 1.75;
+  max-width: 56ch;
+}
+
+.tabs-panel:focus-visible {
+  outline: 1.5px solid var(--ink);
+  outline-offset: 6px;
+}
+
+/* Mobile menu tab list. */
+.mnav a {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mnav a::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid var(--stroke);
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.mnav a[aria-current="page"] {
+  color: var(--ink);
+}
+
+.mnav a[aria-current="page"]::before {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.mnav-label {
+  margin-top: 26px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* Shop filter counts + live result count. */
+.shop-count {
+  margin: 0 0 26px;
+  min-height: 1em;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.54rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.filter-count {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 0.5rem;
+  opacity: 0.55;
+}
+
+/* Standards page. */
+.standards-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.standards-grid .trust-item {
+  border-left: 0;
+}
+
+.standards-grid .trust-item:nth-child(even) {
+  border-left: 1px solid var(--hairline);
+}
+
+.standards-grid .trust-item:nth-child(n + 3) {
+  border-top: 1px solid var(--hairline);
+}
+
+.pub-list {
+  list-style: none;
+  border-top: 1px solid var(--hairline);
+}
+
+.pub-list li {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 24px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.pub-index {
+  padding-top: 4px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--faint);
+}
+
+.pub-list h3 {
+  font-size: 1.05rem;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+}
+
+.pub-list p {
+  margin-top: 10px;
+  max-width: 58ch;
+  color: var(--stone);
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.standards-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: clamp(48px, 6vw, 72px);
+  padding-top: 40px;
+  border-top: 1px solid var(--hairline);
 }
 
 .related {
@@ -2166,5 +2349,33 @@ body.overlay-open {
 
   .thumbs {
     grid-template-columns: repeat(3, 72px);
+  }
+}
+
+@media (max-width: 700px) {
+  .standards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .standards-grid .trust-item:nth-child(even) {
+    border-left: 0;
+  }
+
+  .standards-grid .trust-item:nth-child(n + 2) {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .pub-list li {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .pub-index {
+    padding-top: 0;
+  }
+
+  .standards-cta {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

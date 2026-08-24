@@ -65,15 +65,23 @@
     syncTheme();
   });
 
+  /* Persistent section tabs: Shop / Science / Standards / Journal are real
+     pages, so their links stay plain navigation links and only carry an
+     honest active state (aria-current="page") — no WAI-ARIA tab roles,
+     which would require a tablist/panel contract these links do not honour. */
+  const NAV_TAB_PAGES = {
+    shop: ["shop.html", "product.html", "cart.html", "checkout.html", "order.html"],
+    science: ["about.html"],
+    standards: ["standards.html"],
+    journal: ["journal.html"],
+  };
   const currentPage = location.pathname.split("/").pop() || "index.html";
-  $$(".nav a, .mnav a").forEach((link) => {
-    const target = new URL(link.href, location.href).pathname.split("/").pop() || "index.html";
-    if (["index.html", "shop.html", "about.html", "journal.html"].includes(target)) {
-      link.setAttribute("role", "tab");
-      link.setAttribute("aria-selected", String(target === currentPage));
-      if (target === currentPage) link.setAttribute("aria-current", "page");
-    }
+  const activeTab = Object.keys(NAV_TAB_PAGES).find((tab) => NAV_TAB_PAGES[tab].includes(currentPage));
+  $$(".nav a[data-tab], .mnav a[data-tab]").forEach((link) => {
+    if (link.dataset.tab === activeTab) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
   });
+  if (currentPage === "index.html") $(".wordmark")?.setAttribute("aria-current", "page");
 
   const hdr = $("#hdr");
   const progress = document.createElement("div");
@@ -101,16 +109,44 @@
   });
 
   const tgl = $("#navTgl");
-  const closeMenu = () => {
+  const mnav = $("#mnav");
+  if (mnav) {
+    const label = document.createElement("p");
+    label.className = "mnav-label";
+    label.textContent = "Explore";
+    mnav.insertBefore(label, mnav.firstChild);
+  }
+  const openMenu = () => {
+    if (!tgl || document.body.classList.contains("menu-open")) return;
+    document.body.classList.add("menu-open");
+    tgl.setAttribute("aria-expanded", "true");
+    mnav?.querySelector("a")?.focus({ preventScroll: true });
+  };
+  const closeMenu = (restoreFocus = true) => {
+    if (!tgl || !document.body.classList.contains("menu-open")) return;
     document.body.classList.remove("menu-open");
-    if (tgl) tgl.setAttribute("aria-expanded", "false");
+    tgl.setAttribute("aria-expanded", "false");
+    if (restoreFocus) tgl.focus({ preventScroll: true });
   };
   if (tgl) {
     tgl.addEventListener("click", () => {
-      const open = document.body.classList.toggle("menu-open");
-      tgl.setAttribute("aria-expanded", String(open));
+      if (document.body.classList.contains("menu-open")) closeMenu(false);
+      else openMenu();
     });
-    $$("#mnav a").forEach((a) => a.addEventListener("click", closeMenu));
+    $$("#mnav a").forEach((a) => a.addEventListener("click", () => closeMenu(false)));
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab" || !document.body.classList.contains("menu-open")) return;
+      const focusables = [tgl, ...$$("a", mnav)];
+      const i = focusables.indexOf(document.activeElement);
+      const last = focusables.length - 1;
+      if (e.shiftKey && (i === -1 || i === 0)) {
+        e.preventDefault();
+        focusables[last].focus();
+      } else if (!e.shiftKey && i === last) {
+        e.preventDefault();
+        focusables[0].focus();
+      }
+    });
   }
 
   const bindReveals = (root = document) => {
@@ -258,6 +294,72 @@
     }
   });
 
+  /* History helpers — URL sync degrades gracefully where history state is
+     unavailable (e.g. pages opened straight from disk over file://). */
+  const historyPush = (url) => {
+    try {
+      history.pushState(null, "", url);
+    } catch {
+      /* ignore — in-page state still applies */
+    }
+  };
+  const historyReplace = (url) => {
+    try {
+      history.replaceState(null, "", url);
+    } catch {
+      /* ignore — in-page state still applies */
+    }
+  };
+
+  /* ---------- Reusable tab shell (WAI-ARIA tabs, APG automatic activation) ---------- */
+  const initTabs = (tablist) => {
+    if (!tablist) return null;
+    const tabs = $$("[role='tab']", tablist);
+    if (!tabs.length) return null;
+    const panels = tabs.map((t) => document.getElementById(t.getAttribute("aria-controls")));
+    const select = (tab, { focus = false, push = false } = {}) => {
+      const i = tabs.indexOf(tab);
+      if (i === -1) return;
+      tabs.forEach((t, j) => {
+        const on = j === i;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (panels[j]) panels[j].hidden = !on;
+      });
+      if (focus) tab.focus();
+      const url = new URL(location.href);
+      if (tab.id) url.hash = `#${tab.id}`;
+      else url.hash = "";
+      (push ? historyPush : historyReplace)(url);
+    };
+    tabs.forEach((tab) =>
+      tab.addEventListener("click", () => {
+        if (tab.getAttribute("aria-selected") === "true") return;
+        select(tab, { push: true });
+      })
+    );
+    tablist.addEventListener("keydown", (e) => {
+      const i = tabs.indexOf(e.target.closest?.("[role='tab']") || e.target);
+      if (i === -1) return;
+      let next = null;
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") next = tabs[(i + 1) % tabs.length];
+      else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === "Home") next = tabs[0];
+      else if (e.key === "End") next = tabs[tabs.length - 1];
+      if (next) {
+        e.preventDefault();
+        select(next, { focus: true });
+      }
+    });
+    const fromHash = () => {
+      const match = tabs.find((t) => t.id === location.hash.slice(1));
+      select(match || tabs[0]);
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return { tabs, select };
+  };
+
   const bindAccordion = (acc) => {
     const btn = $(".acc-btn", acc);
     const panel = $(".acc-panel", acc);
@@ -294,9 +396,23 @@
   if (shopGrid) {
     const filters = $$("[data-filter]");
     const sortSelect = $("#shopSort");
+    const shopCount = $("#shopCount");
     let activeSort = localStorage.getItem("calyx.shopSort") || "featured";
     if (sortSelect) sortSelect.value = activeSort;
+    const filterValues = filters.map((b) => b.dataset.filter);
+    const readFilter = () => {
+      const f = new URLSearchParams(location.search).get("filter");
+      return filterValues.includes(f) ? f : "all";
+    };
+    let currentFilter = "all";
+    const setFilterURL = (concern, push) => {
+      const url = new URL(location.href);
+      if (concern === "all") url.search = "";
+      else url.searchParams.set("filter", concern);
+      (push ? historyPush : historyReplace)(url);
+    };
     const paint = (concern) => {
+      currentFilter = concern;
       const list = (concern === "all" ? store.PRODUCTS : store.PRODUCTS.filter((p) => p.concerns.includes(concern))).slice();
       if (activeSort === "price-low") list.sort((a, b) => a.price - b.price);
       if (activeSort === "price-high") list.sort((a, b) => b.price - a.price);
@@ -307,16 +423,30 @@
       bindAdds(shopGrid);
       bindReveals(shopGrid);
       filters.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filter === concern)));
+      if (shopCount) shopCount.textContent = `Showing ${list.length} of ${store.PRODUCTS.length} formulas`;
     };
-    filters.forEach((b) => b.addEventListener("click", () => paint(b.dataset.filter)));
+    filters.forEach((b) => {
+      if (b.dataset.filter !== "all") {
+        const n = store.PRODUCTS.filter((p) => p.concerns.includes(b.dataset.filter)).length;
+        const count = document.createElement("span");
+        count.className = "filter-count";
+        count.textContent = String(n);
+        b.appendChild(count);
+      }
+      b.addEventListener("click", () => {
+        if (b.dataset.filter === currentFilter) return;
+        paint(b.dataset.filter);
+        setFilterURL(b.dataset.filter, true);
+      });
+    });
     sortSelect?.addEventListener("change", () => {
       activeSort = sortSelect.value;
       localStorage.setItem("calyx.shopSort", activeSort);
-      const selected = filters.find((b) => b.getAttribute("aria-pressed") === "true");
-      paint(selected?.dataset.filter || "all");
+      paint(currentFilter);
     });
-    const start = new URLSearchParams(location.search).get("filter") || "all";
-    paint(start);
+    paint(readFilter());
+    setFilterURL(currentFilter, false);
+    window.addEventListener("popstate", () => paint(readFilter()));
   }
 
   /* ---------- Home collection (ensure IDs even if markup is static) ---------- */
@@ -402,28 +532,30 @@
             <span>Carbon neutral</span>
             <span>30-day returns</span>
           </p>
-          <div class="accs" data-reveal style="--d: 420ms">
-            ${[
-              ["Supplement facts", `<table class="facts"><tbody>${product.facts
-                .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`)
-                .join("")}</tbody></table><p class="facts-note">† Daily value not established</p>`],
-              ["The ritual", product.ritual],
-              ["Testing & purity", product.testing],
-              [
-                "Shipping & returns",
-                "Orders leave our facility within 48 hours in plastic-free, carbon-neutral packaging. Unopened items may be returned within 30 days; your first opened order is covered by a 60-night guarantee.",
-              ],
-            ]
-              .map(
-                ([title, body]) => `<div class="acc">
-                <button class="acc-btn" type="button" aria-expanded="false">
-                  ${title}
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></svg>
-                </button>
-                <div class="acc-panel"><div class="acc-panel-inner">${body}</div></div>
-              </div>`
-              )
-              .join("")}
+          <div class="tabs" data-reveal style="--d: 420ms">
+            <div class="tabs-list" role="tablist" aria-label="Product details">
+              <button class="tabs-btn" type="button" role="tab" id="tab-facts" aria-controls="panel-facts">Supplement facts</button>
+              <button class="tabs-btn" type="button" role="tab" id="tab-ritual" aria-controls="panel-ritual" tabindex="-1">The ritual</button>
+              <button class="tabs-btn" type="button" role="tab" id="tab-testing" aria-controls="panel-testing" tabindex="-1">Testing &amp; purity</button>
+              <button class="tabs-btn" type="button" role="tab" id="tab-shipping" aria-controls="panel-shipping" tabindex="-1">Shipping &amp; returns</button>
+            </div>
+            <div class="tabs-panels">
+              <section class="tabs-panel" role="tabpanel" id="panel-facts" aria-labelledby="tab-facts" tabindex="0">
+                <table class="facts"><tbody>${product.facts
+                  .map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`)
+                  .join("")}</tbody></table>
+                <p class="facts-note">† Daily value not established</p>
+              </section>
+              <section class="tabs-panel" role="tabpanel" id="panel-ritual" aria-labelledby="tab-ritual" tabindex="0" hidden>
+                ${product.ritual}
+              </section>
+              <section class="tabs-panel" role="tabpanel" id="panel-testing" aria-labelledby="tab-testing" tabindex="0" hidden>
+                ${product.testing}
+              </section>
+              <section class="tabs-panel" role="tabpanel" id="panel-shipping" aria-labelledby="tab-shipping" tabindex="0" hidden>
+                Orders leave our facility within 48 hours in plastic-free, carbon-neutral packaging. Unopened items may be returned within 30 days; your first opened order is covered by a 60-night guarantee.
+              </section>
+            </div>
           </div>
         </div>
       </div>`;
@@ -477,15 +609,7 @@
       renderBuy();
     });
 
-    $$(".acc", pdp).forEach((acc) => {
-      const btn = $(".acc-btn", acc);
-      const panel = $(".acc-panel", acc);
-      btn.addEventListener("click", () => {
-        const open = acc.classList.toggle("open");
-        btn.setAttribute("aria-expanded", String(open));
-        panel.style.maxHeight = open ? panel.scrollHeight + "px" : "0px";
-      });
-    });
+    initTabs($(".tabs-list", pdp));
 
     const stage = $("#stage");
     $$(".thumb[data-view]", pdp).forEach((t) => {
