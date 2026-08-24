@@ -1,6 +1,14 @@
 (() => {
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const escapeHTML = (value) =>
+    String(value).replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    })[char]);
   const store = window.Calyx;
   if (!store) return;
 
@@ -148,7 +156,7 @@
       return hay.includes(query);
     });
     if (!hits.length) {
-      searchResults.innerHTML = `<p class="empty-copy">No formulas match “${q.trim()}”.</p>`;
+      searchResults.innerHTML = `<p class="empty-copy">No formulas match “${escapeHTML(q.trim())}”.</p>`;
       return;
     }
     searchResults.innerHTML = hits
