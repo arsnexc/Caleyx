@@ -283,11 +283,14 @@
   const shopGrid = $("#shopGrid");
   if (shopGrid) {
     const filters = $$("[data-filter]");
+    const sortSelect = $("#shopSort");
+    let activeSort = localStorage.getItem("calyx.shopSort") || "featured";
+    if (sortSelect) sortSelect.value = activeSort;
     const paint = (concern) => {
-      const list =
-        concern === "all"
-          ? store.PRODUCTS
-          : store.PRODUCTS.filter((p) => p.concerns.includes(concern));
+      const list = (concern === "all" ? store.PRODUCTS : store.PRODUCTS.filter((p) => p.concerns.includes(concern))).slice();
+      if (activeSort === "price-low") list.sort((a, b) => a.price - b.price);
+      if (activeSort === "price-high") list.sort((a, b) => b.price - a.price);
+      if (activeSort === "name") list.sort((a, b) => a.name.localeCompare(b.name));
       shopGrid.innerHTML = list.length
         ? list.map((p, i) => store.cardHTML(p, { delay: (i % 3) * 80 })).join("")
         : `<p class="empty-copy">Nothing in this ritual yet.</p>`;
@@ -296,6 +299,12 @@
       filters.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filter === concern)));
     };
     filters.forEach((b) => b.addEventListener("click", () => paint(b.dataset.filter)));
+    sortSelect?.addEventListener("change", () => {
+      activeSort = sortSelect.value;
+      localStorage.setItem("calyx.shopSort", activeSort);
+      const selected = filters.find((b) => b.getAttribute("aria-pressed") === "true");
+      paint(selected?.dataset.filter || "all");
+    });
     const start = new URLSearchParams(location.search).get("filter") || "all";
     paint(start);
   }

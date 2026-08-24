@@ -1661,11 +1661,41 @@ body.overlay-open {
   max-width: 48ch;
 }
 
+.shop-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 36px 0 28px;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 36px 0 28px;
+}
+
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .55rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.sort-control select {
+  height: 36px;
+  padding: 0 30px 0 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: .08em;
 }
 
 .filters button {
@@ -2065,6 +2095,12 @@ body.overlay-open {
 
   .card-media {
     aspect-ratio: 4 / 4.3;
+  }
+
+  .shop-controls {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .sect-head {

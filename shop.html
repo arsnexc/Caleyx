@@ -79,7 +79,8 @@
         <h1 class="display" data-reveal>Six formulas.</h1>
         <p class="lede" data-reveal>Everything you need. Nothing you don’t. Filter by the ritual you came for.</p>
       </header>
-      <div class="filters" role="group" aria-label="Filter formulas">
+      <div class="shop-controls">
+        <div class="filters" role="group" aria-label="Filter formulas">
         <button type="button" data-filter="all" aria-pressed="true">All</button>
         <button type="button" data-filter="sleep">Sleep</button>
         <button type="button" data-filter="stress">Stress</button>
@@ -87,6 +88,15 @@
         <button type="button" data-filter="skin">Skin</button>
         <button type="button" data-filter="immunity">Immunity</button>
         <button type="button" data-filter="daily">Daily</button>
+        </div>
+        <label class="sort-control">Sort by
+          <select id="shopSort" aria-label="Sort products">
+            <option value="featured">Featured</option>
+            <option value="price-low">Price: low to high</option>
+            <option value="price-high">Price: high to low</option>
+            <option value="name">Name: A to Z</option>
+          </select>
+        </label>
       </div>
       <div class="grid-cards" id="shopGrid"></div>
     </main>
