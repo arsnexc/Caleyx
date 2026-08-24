@@ -436,10 +436,63 @@ body.menu-open .mnav {
   object-position: center;
   border-radius: 18px;
   mix-blend-mode: multiply;
+  filter: saturate(0.82) contrast(0.98);
+  transition: transform 1.2s var(--ease), filter 0.8s ease;
+}
+
+.hero-stage:hover .hero-image {
+  transform: scale(1.025);
+  filter: saturate(0.95) contrast(1.01);
 }
 
 .hero-stage .piece {
   display: none;
+}
+
+/* Small, tactile feedback makes the quiet interface feel responsive. */
+.btn,
+.quick-add,
+.filters button,
+.icon-btn,
+.to-top {
+  will-change: transform;
+}
+
+.btn:active,
+.quick-add:active,
+.filters button:active,
+.icon-btn:active,
+.to-top:active {
+  transform: scale(0.97);
+}
+
+.quick-add.added {
+  background: var(--ink);
+  color: var(--ivory);
+  border-color: var(--ink);
+}
+
+.card-media::after,
+.journal-card::after {
+  transition: opacity 0.5s ease;
+}
+
+.card-media:focus-visible {
+  box-shadow: 0 0 0 3px var(--ivory), 0 0 0 4.5px var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stage:hover .hero-image {
+    transform: none;
+  }
+
+  .btn:active,
+  .quick-add:active,
+  .filters button:active,
+  .icon-btn:active,
+  .to-top:active {
+    transform: none;
+  }
 }
 
 .hero-stage::before {
