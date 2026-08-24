@@ -45,9 +45,29 @@
   window.addEventListener("calyx:cart", syncBadges);
 
   const hdr = $("#hdr");
-  const onScroll = () => hdr && hdr.classList.toggle("scrolled", window.scrollY > 8);
+  const progress = document.createElement("div");
+  progress.className = "scroll-progress";
+  progress.setAttribute("aria-hidden", "true");
+  document.body.appendChild(progress);
+  const toTop = document.createElement("button");
+  toTop.className = "to-top";
+  toTop.type = "button";
+  toTop.setAttribute("aria-label", "Back to top");
+  toTop.innerHTML = "↑";
+  document.body.appendChild(toTop);
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = max > 0 ? (window.scrollY / max) * 100 : 0;
+    progress.style.setProperty("--progress", `${percent}%`);
+    hdr && hdr.classList.toggle("scrolled", window.scrollY > 8);
+    toTop.classList.toggle("visible", window.scrollY > 560);
+  };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
+  toTop.addEventListener("click", () => {
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    window.scrollTo({ top: 0, behavior });
+  });
 
   const tgl = $("#navTgl");
   const closeMenu = () => {
