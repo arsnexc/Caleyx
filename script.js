@@ -44,6 +44,27 @@
   syncBadges();
   window.addEventListener("calyx:cart", syncBadges);
 
+  const themeToggle = document.createElement("button");
+  themeToggle.className = "icon-btn theme-toggle";
+  themeToggle.type = "button";
+  themeToggle.setAttribute("aria-label", "Toggle dark mode");
+  themeToggle.innerHTML = "◐";
+  const savedTheme = localStorage.getItem("calyx.theme");
+  if (savedTheme === "dark") document.documentElement.dataset.theme = "dark";
+  $(".acts")?.prepend(themeToggle);
+  const syncTheme = () => {
+    const dark = document.documentElement.dataset.theme === "dark";
+    themeToggle.setAttribute("aria-pressed", String(dark));
+    themeToggle.title = dark ? "Use light mode" : "Use dark mode";
+  };
+  syncTheme();
+  themeToggle.addEventListener("click", () => {
+    const dark = document.documentElement.dataset.theme !== "dark";
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    localStorage.setItem("calyx.theme", dark ? "dark" : "light");
+    syncTheme();
+  });
+
   const hdr = $("#hdr");
   const progress = document.createElement("div");
   progress.className = "scroll-progress";
