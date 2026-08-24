@@ -453,7 +453,7 @@ body.menu-open .mnav {
 }
 
 .piece-a {
-  left: 9%;
+  left: 7%;
   z-index: 1;
 }
 
@@ -462,7 +462,7 @@ body.menu-open .mnav {
 }
 
 .piece-b {
-  left: 50%;
+  left: 48%;
   transform: translateX(-50%);
   z-index: 2;
 }
@@ -473,7 +473,7 @@ body.menu-open .mnav {
 }
 
 .piece-c {
-  right: 7%;
+  right: 2%;
   z-index: 1;
 }
 
