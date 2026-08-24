@@ -427,6 +427,21 @@ body.menu-open .mnav {
   height: clamp(420px, 56vh, 620px);
 }
 
+.hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 18px;
+  mix-blend-mode: multiply;
+}
+
+.hero-stage .piece {
+  display: none;
+}
+
 .hero-stage::before {
   content: "";
   position: absolute;
