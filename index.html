@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calyx — Wellness, distilled to its essence</title>
+    <meta
+      name="description"
+      content="Calyx formulates evidence-led supplements in their purest form. Clinical doses, no fillers, published assays."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12.5' fill='none' stroke='%23161513' stroke-width='1.5'/%3E%3Cpath d='M16 9v14M16 14c0-3 2-5 5-5M16 17c0-3-2-5-5-5' fill='none' stroke='%23161513' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@200..600&family=IBM+Plex+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="renders.css" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <script src="js/store.js"></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <p class="announce">Complimentary carbon-neutral shipping over $75 &middot; 30-day returns</p>
+    <header class="hdr" id="hdr">
+      <div class="bar container">
+        <button class="nav-tgl" id="navTgl" aria-expanded="false" aria-controls="mnav" aria-label="Menu">
+          <span></span>
+        </button>
+        <a class="wordmark" href="index.html">CALYX</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="shop.html">Shop</a>
+          <a href="about.html">Science</a>
+          <a href="index.html#trust">Standards</a>
+          <a href="journal.html">Journal</a>
+        </nav>
+        <div class="acts">
+          <button class="icon-btn" type="button" data-search aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20.2 20.2 16.3 16.3" />
+            </svg>
+          </button>
+          <a class="icon-btn" href="account.html" aria-label="Account">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">
+              <circle cx="12" cy="8" r="3.6" />
+              <path d="M4.6 20c1.4-3.4 4.1-5 7.4-5s6 1.6 7.4 5" />
+            </svg>
+          </a>
+          <a class="icon-btn" href="cart.html" aria-label="Cart, 0 items">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6.4 8h11.2l-.9 11.1a2 2 0 0 1-2 1.9H9.3a2 2 0 0 1-2-1.9L6.4 8Z" />
+              <path d="M9 8V6.9a3 3 0 0 1 6 0V8" />
+            </svg>
+            <span class="ct" id="ct" aria-hidden="true">0</span>
+          </a>
+        </div>
+      </div>
+      <nav class="mnav" id="mnav" aria-label="Mobile">
+        <a href="shop.html">Shop</a>
+        <a href="about.html">Science</a>
+        <a href="index.html#trust">Standards</a>
+        <a href="journal.html">Journal</a>
+        <a href="account.html">Account</a>
+        <div class="mnav-foot">
+          <span>Calyx Laboratories</span>
+          <span>Portland, Oregon</span>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow" data-reveal>Evidence-led supplementation</span>
+            <h1 class="display" data-reveal style="--d: 90ms">
+              Wellness, distilled<br />
+              to its essence.
+            </h1>
+            <p class="lede" data-reveal style="--d: 180ms">
+              Six clinical-grade formulas. Nothing synthetic, nothing superfluous — every dose
+              supported by peer-reviewed research and published openly.
+            </p>
+            <div class="hero-actions" data-reveal style="--d: 260ms">
+              <a class="btn" href="#collection">Shop the collection</a>
+              <a class="arrow-link" href="#trust">
+                Our standards
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 12h15" />
+                  <path d="M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            </div>
+            <p class="hero-note" data-reveal style="--d: 340ms">
+              <span>Third-party tested</span>
+              <span>No fillers</span>
+              <span>Clinical doses</span>
+            </p>
+          </div>
+          <div class="hero-stage">
+            <a class="piece piece-a" href="product.html?id=vitamin-d3-k2" aria-label="Vitamin D3 + K2 Drops" data-reveal style="--d: 300ms">
+              <div class="p p-dropper acc-slate">
+                <span class="bulb"></span>
+                <span class="collar"></span>
+                <div class="vial">
+                  <span class="pipette"></span>
+                  <span class="lbl">
+                    <span class="lb">CALYX</span>
+                    <span class="ln">Vitamin D3 + K2</span>
+                    <span class="ls">30 ML &middot; 2000 IU</span>
+                  </span>
+                </div>
+              </div>
+            </a>
+            <a class="piece piece-b" href="product.html?id=magnesium-glycinate-400" aria-label="Magnesium Glycinate 400" data-reveal style="--d: 200ms">
+              <div class="p p-bottle acc-sage">
+                <span class="cap"></span>
+                <span class="neck"></span>
+                <div class="bod">
+                  <span class="lbl">
+                    <span class="lb">CALYX</span>
+                    <span class="ln">Magnesium<br />Glycinate</span>
+                    <span class="ls">400 MG &middot; 60 CAP</span>
+                  </span>
+                </div>
+              </div>
+            </a>
+            <a class="piece piece-c" href="product.html?id=marine-collagen-peptides" aria-label="Marine Collagen Peptides" data-reveal style="--d: 400ms">
+              <div class="p p-powder acc-oat">
+                <span class="lid-metal"></span>
+                <div class="jar">
+                  <span class="lbl">
+                    <span class="lb">CALYX</span>
+                    <span class="ln">Marine Collagen<br />Peptides</span>
+                    <span class="ls">300 G &middot; TYPE I</span>
+                  </span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="sect container" id="collection">
+        <div class="sect-head" data-reveal>
+          <div>
+            <span class="eyebrow">The collection — six formulas</span>
+            <h2 class="display">Everything you need.<br />Nothing you don&rsquo;t.</h2>
+          </div>
+          <a class="arrow-link" href="shop.html">
+            View all six
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12h15" />
+              <path d="M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+        <div class="grid-cards">
+          <article class="card" data-reveal>
+            <div class="media">
+              <a class="card-media" href="product.html?id=magnesium-glycinate-400" aria-label="View Magnesium Glycinate 400">
+                <span class="render" aria-hidden="true">
+                  <span class="p p-bottle acc-sage">
+                    <span class="cap"></span>
+                    <span class="neck"></span>
+                    <span class="bod">
+                      <span class="lbl">
+                        <span class="lb">CALYX</span>
+                        <span class="ln">Magnesium<br />Glycinate</span>
+                        <span class="ls">400 MG &middot; 60 CAP</span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </a>
+              <button class="quick-add" type="button" data-add data-id="magnesium-glycinate-400">Quick add &middot; $34</button>
+            </div>
+            <div class="card-info">
+              <div class="card-row">
+                <h3>Magnesium Glycinate 400</h3>
+                <span class="price">$34</span>
+              </div>
+              <p class="card-desc">Sleep, stress &amp; muscle recovery</p>
+              <span class="card-spec">60 capsules &middot; 400 mg &middot; chelated</span>
+            </div>
+          </article>
+
+          <article class="card" data-reveal style="--d: 80ms">
+            <div class="media">
+              <a class="card-media" href="product.html?id=omega-3-triglyceride" aria-label="View Omega-3 Triglyceride">
+                <span class="render" aria-hidden="true">
+                  <span class="p p-glass acc-honey">
+                    <span class="cap"></span>
+                    <span class="neck"></span>
+                    <span class="bod">
+                      <span class="lbl">
+                        <span class="lb">CALYX</span>
+                        <span class="ln">Omega-3<br />Triglyceride</span>
+                        <span class="ls">1000 MG &middot; 90 SG</span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </a>
+              <button class="quick-add" type="button" data-add data-id="omega-3-triglyceride">Quick add &middot; $42</button>
+            </div>
+            <div class="card-info">
+              <div class="card-row">
+                <h3>Omega-3 Triglyceride</h3>
+                <span class="price">$42</span>
+              </div>
+              <p class="card-desc">Heart &amp; cognitive function</p>
+              <span class="card-spec">90 softgels &middot; 1,000 mg &middot; rTG form</span>
+            </div>
+          </article>
+
+          <article class="card" data-reveal style="--d: 160ms">
+            <div class="media">
+              <a class="card-media" href="product.html?id=ashwagandha-ksm-66" aria-label="View Ashwagandha KSM-66">
+                <span class="render" aria-hidden="true">
+                  <span class="p p-jar acc-clay">
+                    <span class="lid"></span>
+                    <span class="pot">
+                      <span class="lbl">
+                        <span class="lb">CALYX</span>
+                        <span class="ln">Ashwagandha<br />KSM-66</span>
+                        <span class="rule"></span>
+                        <span class="ls">600 MG &middot; 60 CAP</span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </a>
+              <button class="quick-add" type="button" data-add data-id="ashwagandha-ksm-66">Quick add &middot; $38</button>
+            </div>
+            <div class="card-info">
+              <div class="card-row">
+                <h3>Ashwagandha KSM-66</h3>
+                <span class="price">$38</span>
+              </div>
+              <p class="card-desc">Daily stress response balance</p>
+              <span class="card-spec">60 capsules &middot; 600 mg &middot; root only</span>
+            </div>
+          </article>
+
+          <article class="card" data-reveal>
+            <div class="media">
+              <a class="card-media" href="product.html?id=vitamin-d3-k2" aria-label="View Vitamin D3 plus K2 Drops">
+                <span class="render" aria-hidden="true">
+                  <span class="p p-dropper acc-slate">
+                    <span class="bulb"></span>
+                    <span class="collar"></span>
+                    <span class="vial">
+                      <span class="pipette"></span>
+                      <span class="lbl">
+                        <span class="lb">CALYX</span>
+                        <span class="ln">Vitamin D3 + K2</span>
+                        <span class="ls">30 ML &middot; 2000 IU</span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </a>
+              <button class="quick-add" type="button" data-add data-id="vitamin-d3-k2">Quick add &middot; $28</button>
+            </div>
+            <div class="card-info">
+              <div class="card-row">
+                <h3>Vitamin D3 + K2 Drops</h3>
+                <span class="price">$28</span>
+              </div>
+              <p class="card-desc">Immunity &amp; bone health</p>
+              <span class="card-spec">30 mL &middot; 2,000 IU &middot; MCT base</span>
+            </div>
+          </article>
+
+          <article class="card" data-reveal style="--d: 80ms">
+            <div class="media">
+              <a class="card-media" href="product.html?id=marine-collagen-peptides" aria-label="View Marine Collagen Peptides">
+                <span class="render" aria-hidden="true">
+                  <span class="p p-powder acc-oat">
+                    <span class="lid-metal"></span>
+                    <span class="jar">
+                      <span class="lbl">
+                        <span class="lb">CALYX</span>
+                        <span class="ln">Marine Collagen<br />Peptides</span>
+                        <span class="ls">300 G &middot; TYPE I</span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </a>
+              <button class="quick-add" type="button" data-add data-id="marine-collagen-peptides">Quick add &middot; $52</button>
+            </div>
+            <div class="card-info">
+              <div class="card-row">
+                <h3>Marine Collagen Peptides</h3>
+                <span class="price">$52</span>
+              </div>
+              <p class="card-desc">Skin, hair &amp; joint support</p>
+              <span class="card-spec">300 g &middot; type I &middot; wild-caught</span>
+            </div>
+          </article>
+
+          <article class="card" data-reveal style="--d: 160ms">
+            <div class="media">
+              <a class="card-media" href="product.html?id=probiotic-50-billion" aria-label="View Probiotic 50 Billion">
+                <span class="render" aria-hidden="true">
+                  <span class="p p-bottle acc-slate">
+                    <span class="cap"></span>
+                    <span class="neck"></span>
+                    <span class="bod">
+                      <span class="lbl">
+                        <span class="lb">CALYX</span>
+                        <span class="ln">Probiotic<br />50 Billion</span>
+                        <span class="ls">30 CAP &middot; 12 STRAINS</span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+              </a>
+              <button class="quick-add" type="button" data-add data-id="probiotic-50-billion">Quick add &middot; $44</button>
+            </div>
+            <div class="card-info">
+              <div class="card-row">
+                <h3>Probiotic 50 Billion</h3>
+                <span class="price">$44</span>
+              </div>
+              <p class="card-desc">Gut flora &amp; digestion</p>
+              <span class="card-spec">30 capsules &middot; 12 strains &middot; shelf-stable</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="trust" id="trust">
+        <div class="trust-grid container">
+          <div class="trust-item" data-reveal>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.4 3h5.2" />
+              <path d="M10.4 3v5.3L5.5 17a2.2 2.2 0 0 0 2 3.2h9a2.2 2.2 0 0 0 2-3.2l-4.9-8.7V3" />
+              <path d="M7.4 14.2h9.2" />
+            </svg>
+            <h3>Third-party tested</h3>
+            <p>Every batch verified by independent laboratories. Certificates published openly, lot by lot.</p>
+          </div>
+          <div class="trust-item" data-reveal style="--d: 80ms">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <circle cx="12" cy="6.6" r="2.5" />
+              <circle cx="6.3" cy="16.6" r="2.5" />
+              <circle cx="17.7" cy="16.6" r="2.5" />
+              <path d="M10.9 8.9 7.4 14.4M13.1 8.9l3.5 5.5M8.8 16.6h6.4" />
+            </svg>
+            <h3>Clinical doses</h3>
+            <p>Formulated at the quantities used in peer-reviewed research — never token amounts.</p>
+          </div>
+          <div class="trust-item" data-reveal style="--d: 160ms">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 5c-8.5.4-13 4.7-13.4 12.7C13.6 17.3 18.2 13 19 5Z" />
+              <path d="M5.6 17.7C8.1 11.9 12.2 8.4 16.4 6.7" />
+            </svg>
+            <h3>Nothing hidden</h3>
+            <p>No fillers, flow agents, colours, or proprietary blends. Every milligram accounted for.</p>
+          </div>
+          <div class="trust-item" data-reveal style="--d: 240ms">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <circle cx="12" cy="12" r="8.2" />
+              <ellipse cx="12" cy="12" rx="3.6" ry="8.2" />
+              <path d="M3.8 12h16.4" />
+            </svg>
+            <h3>Carbon neutral</h3>
+            <p>Plastic-free packaging and offset delivery on every order, to every address.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sect container" id="philosophy">
+        <div class="philo">
+          <div data-reveal>
+            <span class="eyebrow">Philosophy</span>
+            <blockquote style="margin-top: 26px">
+              Formulation is an act of <em>restraint</em>.
+            </blockquote>
+          </div>
+          <div class="philo-body" data-reveal style="--d: 120ms">
+            <p>
+              Most labels compete with louder claims and longer ingredient lists. We started Calyx
+              with the opposite instinct: begin with the evidence, include only what it supports —
+              at the dose it supports — and stop there. What remains is a small collection you can
+              take for life.
+            </p>
+            <div class="stats">
+              <div class="stat">
+                <b>06</b>
+                <span>Formulas, in total</span>
+              </div>
+              <div class="stat">
+                <b>00</b>
+                <span>Fillers or flow agents</span>
+              </div>
+              <div class="stat">
+                <b>100%</b>
+                <span>Assays published</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sect news">
+        <div class="container" data-reveal>
+          <h2 class="display">The Monthly Monograph.</h2>
+          <p>One considered email each month — research notes, formulation stories, early access. Nothing else.</p>
+          <form class="news-form" id="newsForm">
+            <input type="email" name="email" placeholder="Email address" aria-label="Email address" required />
+            <button type="submit" aria-label="Subscribe">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12h15" />
+                <path d="M13 6l6 6-6 6" />
+              </svg>
+            </button>
+          </form>
+          <p class="news-done" id="newsDone">Welcome — check your inbox.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="ftr" id="footer">
+      <div class="container">
+        <div class="ftr-grid">
+          <div class="ftr-brand">
+            <a class="wordmark" href="index.html">CALYX</a>
+            <p>
+              Calyx formulates evidence-led supplements in their purest form. Fewer ingredients,
+              honest doses, published assays.
+            </p>
+          </div>
+          <nav class="ftr-col" aria-label="Shop">
+            <h4>Shop</h4>
+            <ul>
+              <li><a href="shop.html">All products</a></li>
+              <li><a href="shop.html?filter=daily">Bestsellers</a></li>
+              <li><a href="shop.html">New arrivals</a></li>
+              <li><a href="shop.html?filter=daily">Refills</a></li>
+            </ul>
+          </nav>
+          <nav class="ftr-col" aria-label="Company">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="about.html">Our science</a></li>
+              <li><a href="journal.html">Journal</a></li>
+              <li><a href="about.html#sustainability">Sustainability</a></li>
+              <li><a href="contact.html">Careers</a></li>
+            </ul>
+          </nav>
+          <nav class="ftr-col" aria-label="Support">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="shipping.html">Shipping &amp; returns</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="faq.html#accessibility">Accessibility</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="ftr-bar">
+          <span>&copy; <span id="year">2026</span> Calyx Laboratories</span>
+          <nav aria-label="Legal">
+            <a href="legal.html">Terms</a>
+            <a href="legal.html#privacy">Privacy</a>
+            <a href="legal.html#cookies">Cookies</a>
+          </nav>
+        </div>
+      </div>
+      <div class="wm" aria-hidden="true">CALYX</div>
+    </footer>
+  </body>
+</html>
