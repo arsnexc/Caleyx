@@ -65,6 +65,16 @@
     syncTheme();
   });
 
+  const currentPage = location.pathname.split("/").pop() || "index.html";
+  $$(".nav a, .mnav a").forEach((link) => {
+    const target = new URL(link.href, location.href).pathname.split("/").pop() || "index.html";
+    if (["index.html", "shop.html", "about.html", "journal.html"].includes(target)) {
+      link.setAttribute("role", "tab");
+      link.setAttribute("aria-selected", String(target === currentPage));
+      if (target === currentPage) link.setAttribute("aria-current", "page");
+    }
+  });
+
   const hdr = $("#hdr");
   const progress = document.createElement("div");
   progress.className = "scroll-progress";

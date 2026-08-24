@@ -257,8 +257,17 @@ svg {
   transition: transform 0.4s var(--ease);
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav a[aria-current="page"] {
   color: var(--ink);
+}
+
+.nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.nav a[aria-current="page"] {
+  font-weight: 500;
 }
 
 .nav a:hover::after {
