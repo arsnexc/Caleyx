@@ -31,6 +31,7 @@
     };
   })();
 
+  let lastBadge = -1;
   const syncBadges = () => {
     const { count } = store.cart.read();
     $$(".ct").forEach((ct) => {
@@ -39,7 +40,13 @@
       if (parent) {
         parent.setAttribute("aria-label", `Cart, ${count} ${count === 1 ? "item" : "items"}`);
       }
+      if (lastBadge !== -1 && count > lastBadge) {
+        ct.classList.remove("pop");
+        void ct.offsetWidth; // restart the pulse animation
+        ct.classList.add("pop");
+      }
     });
+    lastBadge = count;
   };
   syncBadges();
   window.addEventListener("calyx:cart", syncBadges);
@@ -173,15 +180,25 @@
 
   const flashAdded = (btn) => {
     if (!btn) return;
-    const original = btn.dataset.label || btn.innerHTML;
-    btn.dataset.label = original;
+    // Always capture the LIVE markup: caching it in dataset.label on the
+    // first flash would restore a stale price on every later add.
+    const original = btn.innerHTML;
     btn.classList.add("added");
     btn.innerHTML = "Added";
     btn.disabled = true;
     setTimeout(() => {
-      btn.innerHTML = btn.dataset.label;
+      btn.innerHTML = original;
       btn.classList.remove("added");
       btn.disabled = false;
+      // Re-sync any price span against the button's current dataset so a
+      // qty/plan change made during the flash can't leave a stale total.
+      const total = btn.querySelector("#atcTotal");
+      const p = total && btn.dataset.id ? store.byId(btn.dataset.id) : null;
+      if (total && p) {
+        const qty = Number(btn.dataset.qty) || 1;
+        const unit = btn.dataset.plan === "sub" ? p.subscribePrice : p.price;
+        total.textContent = store.money(unit * qty);
+      }
     }, 1400);
   };
 
@@ -576,7 +593,6 @@
     const onceBtn = $("#planOnce");
     const subBtn = $("#planSub");
     const atc = $("#atc");
-    const atcTotal = $("#atcTotal");
     const qtyOut = $("#qtyOut");
 
     const unit = () => (plan === "sub" ? product.subscribePrice : product.price);
@@ -588,7 +604,10 @@
       subBtn.setAttribute("aria-pressed", String(plan === "sub"));
       atc.dataset.plan = plan;
       atc.dataset.qty = String(qty);
-      atcTotal.textContent = store.money(unit() * qty);
+      // Re-query every render: the "Added" flash replaces the button's
+      // innerHTML, which would orphan a cached reference to #atcTotal.
+      const total = atc.querySelector("#atcTotal");
+      if (total) total.textContent = store.money(unit() * qty);
     };
     onceBtn.addEventListener("click", () => {
       plan = "once";
@@ -627,17 +646,23 @@
   /* ---------- Cart page ---------- */
   const cartRoot = $("#cartRoot");
   if (cartRoot) {
+    // Only the first paint uses scroll-reveal. Re-painting (qty +/-, remove)
+    // must be instant — re-observing fresh [data-reveal] nodes would make the
+    // whole bag flash out and fade back in on every click.
+    let animated = false;
     const paint = () => {
       const bag = store.cart.read();
+      const rev = animated ? "" : " data-reveal";
       if (!bag.items.length) {
         cartRoot.innerHTML = `
-          <div class="empty-state" data-reveal>
+          <div class="empty-state"${rev}>
             <p class="eyebrow">Your bag</p>
             <h1 class="display">Nothing here yet.</h1>
             <p class="lede">Six formulas. Add one when you are ready.</p>
             <a class="btn" href="shop.html">Shop the collection</a>
           </div>`;
         bindReveals(cartRoot);
+        animated = true;
         return;
       }
       const shipNote =
@@ -647,12 +672,12 @@
       cartRoot.innerHTML = `
         <div class="cart-layout">
           <div>
-            <p class="eyebrow" data-reveal>Your bag · ${bag.count} ${bag.count === 1 ? "item" : "items"}</p>
-            <h1 class="display" data-reveal>Review &amp; continue.</h1>
+            <p class="eyebrow"${rev}>Your bag · ${bag.count} ${bag.count === 1 ? "item" : "items"}</p>
+            <h1 class="display"${rev}>Review &amp; continue.</h1>
             <ul class="bag-list">
               ${bag.items
                 .map(
-                  (line) => `<li class="bag-item" data-reveal>
+                  (line) => `<li class="bag-item"${rev}>
                     <a class="bag-media render" href="product.html?id=${line.id}" aria-hidden="true">${store.renderHTML(line.product)}</a>
                     <div class="bag-info">
                       <div class="bag-top">
@@ -676,7 +701,7 @@
                 .join("")}
             </ul>
           </div>
-          <aside class="cart-sum" data-reveal>
+          <aside class="cart-sum"${rev}>
             <h2>Summary</h2>
             <dl>
               <div><dt>Subtotal</dt><dd>${store.money(bag.subtotal)}</dd></div>
@@ -691,6 +716,7 @@
           </aside>
         </div>`;
       bindReveals(cartRoot);
+      animated = true;
     };
 
     cartRoot.addEventListener("click", (e) => {
@@ -812,15 +838,17 @@
   /* ---------- Account ---------- */
   const accountRoot = $("#accountRoot");
   if (accountRoot) {
+    let animated = false;
     const paint = () => {
       const me = store.profile.read();
       const orders = JSON.parse(localStorage.getItem("calyx.orders.v1") || "[]");
+      const rev = animated ? "" : " data-reveal";
       if (!me) {
         accountRoot.innerHTML = `
-          <p class="eyebrow" data-reveal>Account</p>
-          <h1 class="display" data-reveal>Sign in to Calyx.</h1>
-          <p class="lede" data-reveal>We keep a local note of your details on this device — no password, no cloud.</p>
-          <form class="stack-form" id="signinForm" data-reveal>
+          <p class="eyebrow"${rev}>Account</p>
+          <h1 class="display"${rev}>Sign in to Calyx.</h1>
+          <p class="lede"${rev}>We keep a local note of your details on this device — no password, no cloud.</p>
+          <form class="stack-form" id="signinForm"${rev}>
             <label>Full name<input name="name" required autocomplete="name" /></label>
             <label>Email<input name="email" type="email" required autocomplete="email" /></label>
             <button class="btn" type="submit">Continue</button>
@@ -833,12 +861,13 @@
           paint();
         });
         bindReveals(accountRoot);
+        animated = true;
         return;
       }
       accountRoot.innerHTML = `
-        <p class="eyebrow" data-reveal>Signed in</p>
-        <h1 class="display" data-reveal>${me.name}</h1>
-        <p class="lede" data-reveal>${me.email}</p>
+        <p class="eyebrow"${rev}>Signed in</p>
+        <h1 class="display"${rev}>${me.name}</h1>
+        <p class="lede"${rev}>${me.email}</p>
         <h2 class="subhead">Orders</h2>
         ${
           orders.length
@@ -860,6 +889,7 @@
         paint();
       });
       bindReveals(accountRoot);
+      animated = true;
     };
     paint();
   }
