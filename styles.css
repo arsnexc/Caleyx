@@ -40,6 +40,13 @@
   padding: 0;
 }
 
+/* Author display rules (e.g. .checkout-grid { display:grid }) would otherwise
+   override the UA [hidden] rule and keep the empty-bag checkout form rendered.
+   Force the hidden attribute to win so empty states stay truly hidden. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
